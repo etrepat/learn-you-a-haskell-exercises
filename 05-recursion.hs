@@ -1,15 +1,22 @@
 -- Raise x to the power y, using recursion
 -- For example, power 5 2 = 25
 power :: Int -> Int -> Int
-power x y = undefined
+power x 0 = 0
+power x 1 = x
+power x y = x * power x (y-1)
 
 -- create a list of length n of the fibbonaci sequence in reverse order
 -- examples: fib 0 = [0]
 -- 	     fib 1 = [1, 0]
---	     fib 10 = [55,34,21,13,8,5,3,2,1,1,0]	
+--	     fib 10 = [55,34,21,13,8,5,3,2,1,1,0]
 -- try to use a where clause
+-- fib :: (Num a, Eq a) => a -> [a]
 fib :: (Num a, Eq a) => a -> [a]
-fib x = undefined
+fib 0 = [0]
+fib n = fib' n : fib (n-1)
+  where fib' 0 = 0
+        fib' 1 = 1
+        fib' a = fib' (a-2) + fib' (a-1)
 
 -- This is not recursive, but have a go anyway.
 -- Create a function which takes two parameters, a number and a step
@@ -18,7 +25,7 @@ fib x = undefined
 --			    stepReverseSign -3 1 = 4
 --			    stepReverseSign 1 2 = -3
 stepReverseSign :: (Fractional a, Ord a) => a -> a -> a
-stepReverseSign a = undefined
+stepReverseSign a b = (a / abs a) * (-1) * (abs a + b)
 
 {- Lets calculate pi.
  - The Leibniz formula for pi (http://en.wikipedia.org/wiki/Leibniz_formula_for_%CF%80)
@@ -36,7 +43,7 @@ stepReverseSign a = undefined
  - snd is the number of recursive steps taken to calculate it, after all this chapter is about recursion!
  - Example: piCalc 0.001 = (3.1420924036835256,2000)
 
- - The piCalc' function is defined as 
+ - The piCalc' function is defined as
  - piCalc' :: (Ord a, Fractional a, Integral b) => a -> a -> a -> b -> (a, b)
  - Lots of parameters!
  - The first parameter is the current denominator from the Leibniz formula
@@ -47,13 +54,19 @@ stepReverseSign a = undefined
  -
  - Feel free to change the parameter order, what parameters you need etc in order to get this to work for you,
  - But, of course the output of piCalc should remain as (pi, count)
- - 
+ -
  - You may find the stepReverseSign function handy
  -}
 
 piCalc :: (Fractional a, Integral b, Ord a) => a -> (a, b)
-piCalc a = undefined
+piCalc a = piCalc' 0.0 a 0
 
-piCalc' :: (Ord a, Fractional a, Integral b) => a -> a -> a -> b -> (a, b)
-piCalc' w x y z = undefined
-
+-- Slightly modified... (no current denominator needed, I compute the full term as per the formula)
+piCalc' :: (Fractional a, Integral b, Ord a) => a -> a -> b -> (a, b)
+piCalc' accum tol it =
+  let
+    term = ((-1)^it / (2 * (fromIntegral it) + 1)) * 4
+    curr = accum + term
+    err = abs term
+  in
+    if err < tol then (curr, it) else piCalc' curr tol (it+1)
