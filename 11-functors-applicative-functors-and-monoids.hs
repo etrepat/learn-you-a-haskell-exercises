@@ -25,7 +25,7 @@ instance Applicative List where
   pure a = Value a Empty
   Empty <*> _ = Empty
   _ <*> Empty = Empty
-  (Value f fs) <*> as = combineLists (f <$> as) (fs <*> as)
+  (Value f fs) <*> as = (f <$> as) <> (fs <*> as)
 
 -- Make sure that the List obeys the laws for Applicative and Monoid
 
