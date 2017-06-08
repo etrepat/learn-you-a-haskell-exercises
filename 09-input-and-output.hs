@@ -9,11 +9,11 @@ main :: IO ()
 main = do
   args <- getArgs
   case args of
-    ("-n":xs) -> putStr $ unwords args
+    ("-n":xs) -> putStr $ unwords xs
     otherwise -> putStrLn $ unwords args
 
 {- Write a lottery number picker
  - This function should take a StdGen instance, and produce a list of six unique numbers between 1 and 49, in numerical order
  -}
-lottery :: StdGen -> [Int]
-lottery gen = undefined
+-- lottery :: StdGen -> [Int]
+-- lottery gen = undefined
