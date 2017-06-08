@@ -1,6 +1,9 @@
 import Control.Applicative
 import Data.Monoid
 
+-- import our assertion function
+import Assert
+
 -- We can use the following type to simulate our own list
 data List a = Empty | Value a (List a) deriving (Show, Eq)
 
@@ -28,23 +31,6 @@ instance Applicative List where
   (Value f fs) <*> as = (f <$> as) <> (fs <*> as)
 
 -- Make sure that the List obeys the laws for Applicative and Monoid
-
--- Simplest testing framework :D
-assert :: Eq a => a -> a -> Bool
-assert expected actual = expected == actual
-
-assertEqual :: (Eq a, Show a) => String -> a -> a -> IO()
-assertEqual message expected actual =
-  let
-    result = assert expected actual
-  in
-    if result == False
-    then do
-      putStrLn $ "[FAILED] " ++ message
-      putStrLn $ "Expected --> " ++ (show expected)
-      putStrLn $ "     Got --> " ++ (show actual)
-    else
-      putStrLn $ "[  OK  ] " ++ message
 
 -- Monoid laws
 testListObeysMonoidLaws :: IO()
