@@ -66,13 +66,30 @@ testListObeysApplicativeLaws =
     assertEqual "fmap f x = pure f <*> x" (fmap func xs) (pure func <*> xs)
 
 -- Create some lists of numbers of different lengths such as:
-twoValueList = Value 10 $ Value 20 Empty
+threeValues = Value 1 $ Value 2 $ Value 3 Empty
+
+fourValues = Value 4 $ Value 5 $ Value 6 $ Value 7 Empty
+
+stringList = Value "foo" $ Value "bar" $ Value "baz" Empty
 
 -- Use <$> on the lists with a single-parameter function, such as:
 plusTwo = (+2)
 
+threeValuesPlusTwo = plusTwo <$> threeValues
+
+fourValuesPlusTwo = plusTwo <$> fourValues
+
 -- Use <$> and <*> on the lists with a binary function
+mul = (*)
+
+threeValuesMultiplied = mul <$> threeValues <*> threeValues
+
+fourValuesMultiplied = mul <$> fourValues <*> fourValues
+
+stringListCombinations = (<>) <$> stringList <*> stringList
 
 -- Create some lists of binary functions
+binFuncs = Value (+) $ Value (*) $ Value (mod) Empty
 
 -- Use <*> on the binary functions list and the number lists
+threeValuesOnBinFuncs = binFuncs <*> threeValues <*> threeValues
